@@ -8,13 +8,13 @@ subtitle: ''
 description: '一些垃圾话'
 keywords:
 author: Froster
-language: zh
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://fros1er.github.io/project
-permalink: :year/:month/:day/:title/
+url: https://fros1er.github.io/
+permalink: :title/
 permalink_defaults:
 pretty_urls:
   trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
@@ -102,4 +102,6 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo:
+    github: https://github.com/Fros1er/Fros1er.github.io.git,gh-pages

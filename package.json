@@ -2,6 +2,7 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@7.1.7",
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "hexo": "^6.2.0",
+    "hexo-cli": "^4.3.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
     "hexo-generator-index": "^2.0.0",
