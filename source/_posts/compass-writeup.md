@@ -124,6 +124,28 @@ ESP好像很像mips的`$ra`...
 #### 脱壳
 百度一个易语言脱壳工具，然后直接文本文件打开看字符串即可。
 
+# Week 5
+本周的题目来自[这里](https://hope.dicega.ng/challs)  
+### crypto/obp
+儿简送的xor。从之前的一个misc知道了flag格式是`hope{}`，所以直接拿`hope{`和密文爆出了key。
+
+### crypto/kfb
+观察加密脚本。
+``` python
+def encrypt(k, pt):
+  assert len(k) == BLOCK
+  pt = pad(pt, BLOCK)
+  ct = b''
+  for bk in ichunked(pt, BLOCK):
+    ct += strxor(encrypt_block(k, k), bytes(bk))
+  return ct
+```
+可以看到`encrypt_block出来的`每次都是同一个东西，记为K。  
+题目允许你自己提供一个hex上去，返回加密的内容。  
+记flag为flag，flag密文为a，提供的内容为m，提供内容的密文为b。  
+有：flag ^ K = a, m ^ k = b  
+则：flag = a ^ b ^ m。  
+实际解题时要注意xor的方式，和BLOCK大小（有一个padding）。
 
 ---
 *未完待续*
