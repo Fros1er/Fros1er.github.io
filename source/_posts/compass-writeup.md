@@ -59,7 +59,7 @@ $query="SELECT * FROM users WHERE name=\'user\\' AND pass=\'".$password.'\';';
 一眼mysql_error，去查了一下还真能注入...  
 然后网上随便找了个`' and exp(~(select * from (select pw from php)x)) #`。注入成功把flag打出来了，交上去提示不对。  
 问了问神仙，拿出来的可能是别的题的flag...草。真正的flag需要到echo "*******"那里。  
-echo前面用的是`!strcasecmp($pass, $row[pw])`判断密码。网上说给strcasecmp传数组会返回0，但$pass过了遍md5，没法用数组。  
+echo前面用的是`!strcasecmp($pass, $row[pw])`判断密码。网上说给strcasecmp传数组会返回0，但\$pass过了遍md5，没法用数组。  
 最后考虑到...反正随便注入，给`$row[pw]`换成自己想要的值就好了。
 构造的是user=`' union select "c4ca4238a0b923820dcc509a6f75849b" as pw #`, pass=`1`。c4ca那一串是1的md5。
 
@@ -74,6 +74,56 @@ e.g. `?str=${phpinfo()}`会打出phpinfo。
 不过有个问题，有addslashes，所以字符串需要...通过GET传进来。  
 最后构造的是`?str=${eval($_GET[1])}&1=echo%20file_get_contents($_GET[2]);&2=flag.php`。
 
-反弹shell...没成功。有空再试。
+反弹shell的话，vps上用`nc -lvnp port`，target照着[your-shell](https://your-shell.com)上的指示来就行。
+
+# Week 4
+### [WhitePages](https://compass.ctfd.io/challenges#Week4/WhitePages-246)
+hex打开一看，一共就四种字符。一开始用的是0x20为分割，其他的计数转八进制，然后赛博厨子没结果。后来把0x20为0，另外一个为1，还是没结果。最后有群友截图问，发现0x20是1，另一个是0...麻了。最后往from binary一丢就完事了。
+
+### [简单的隐写](https://compass.ctfd.io/challenges#Week4/%E7%AE%80%E5%8D%95%E7%9A%84%E9%9A%90%E5%86%99-251)
+这题抄的wp。扔给stegSolve，在RGB通道看到最上面一行有不规则的点...然后没有然后了。
+
+### [m00nwalk](https://compass.ctfd.io/challenges#Week4/m00nwalk-245)
+SSTV。
+
+### [weak password](https://compass.ctfd.io/challenges#Week4/weak%20password-248)
+先用john把压缩包密码破了。  
+密码是5位可打印的ASCII，翻了下john的文档，可以直接配置。
+``` ini
+# /etc/john/john.conf
+[Incremental:Custom]
+File = $JOHN/ascii.chr
+MinLen = 5
+MaxLen = 5
+CharCount = 95
+```
+然后用
+``` shell
+zip2john xxxtentacion.zip >> passwd
+john --incremental:Custom passwd
+```
+就可以爆了。  
+解出一张里面是南通内容的图片，格式jpg。jpg不能LSB（一开始忘记了，看了好久），扔binwalk和stegdetect也没结果。最后拿hex开了一下，发现jpg最后多了点东西。复制出来扔赛博厨子的magic，给出了base64+png。  
+这张图片是个反色缺了三个角的二维码。补上三个角可以拿到flag的后半段，png本体丢进`zsteg -a`可以拿到flag前半段。
+
+### [老坛酸菜之神](https://compass.ctfd.io/challenges#Week4/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C%E4%B9%8B%E7%A5%9E-250)
+据说很简单...总之有好多解法。
+#### CE
+要找100个老坛酸菜的图片，所以找到一个就用CE搜increased by 1...  
+最后搜到的地址是有规律的，都改成99就行。  
+*草啊我手机修改了那么多次游戏怎么在这就没想到*
+
+#### OD（其一）
+据说可以给ESP寄存器下断点，有个叫ESP定理的东西。  
+ESP好像很像mips的`$ra`...  
+总之没成功。
+
+#### OD（其二）
+根据[这篇博客](https://immoying.top/?p=192)，先给MessageBox下断点然后单步调试，易语言的主窗口是`call+add+jmp`，在这里搜索字符串。
+
+#### 脱壳
+百度一个易语言脱壳工具，然后直接文本文件打开看字符串即可。
+
+
 ---
 *未完待续*
