@@ -136,7 +136,7 @@ view space -> clip space
 #### 正交投影 Orthographic projection
 相机离的无限远，可见范围就变成一个立方体了。
 
-![](cg-notes/proj-1.png)
+![](/cg-notes/proj-1.png)
 
 规定可见的立方体的坐标l(left), r(right), b(bottom), t(top), f(far), n(near)。根据摄像机up=y, lookat=-z来定义。  
 然后把这个立方体变成(-1, 1)的标准立方体。
@@ -159,16 +159,16 @@ $$
 
 #### 透视投影 Perspective projection
 摄像机是某个点，从这里投出一个四棱锥。规定四棱锥平行于底面的两个平面为zNear和zFar，渲染这个Frustum里的东西。
-
-![](cg-notes/proj-2.png)  
+ 
+![](/cg-notes/proj-2.png)  
 把左边的frustum挤压成立方体，然后使用透视投影的方法。
-
-![](cg-notes/proj-3.jpg)  
+  
+![](/cg-notes/proj-3.jpg)  
 ~~图是拿notability手画的所以非常丑陋~~  
 由图，根据相似三角形，有$y'= \frac{n}{z}y$。同理$x'= \frac{n}{z}x$。  
 所以有：
 $$
-M_{persp\rArr ortho} \begin{bmatrix}
+M_{persp\rightarrow ortho} \begin{bmatrix}
     x\\
     y\\
     z\\
@@ -189,7 +189,7 @@ M_{persp\rArr ortho} \begin{bmatrix}
 $$
 
 $$
-M_{persp\rArr ortho} = \begin{bmatrix}
+M_{persp\rightarrow ortho} = \begin{bmatrix}
     n&0&0&0\\
     0&n&0&0\\
     ?&?&?&?\\
@@ -199,7 +199,7 @@ $$
 
 那一行?要用两个特殊值：zNear平面点不动，zFar平面点的z不变来解。往里一代：
 $$
-M_{persp\rArr ortho} = \begin{bmatrix}
+M_{persp \rightarrow ortho} = \begin{bmatrix}
     n&0&0&0\\
     0&n&0&0\\
     0&0&n+f&-nf\\
@@ -207,7 +207,7 @@ M_{persp\rArr ortho} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-最后$M_{persp}=M_{ortho}M_{persp\rArr ortho}$。
+最后$M_{persp}=M_{ortho}M_{persp\rightarrow ortho}$。
 
 还有确定坐标的问题...。zFar(f)和zNear(n)是已知的，另外两个参数是摄像机的fov(一般是fovY)和宽高比aspect。  
 那么，
