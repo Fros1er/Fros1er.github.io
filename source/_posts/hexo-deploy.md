@@ -20,5 +20,8 @@ tags:
 最后发现是`git add submodule`没成功。重新add了一遍就好了。干。  
 不过也没浪费时间，至少熟悉了一遍Actions(躺)
 
+然后加mathjax的时候pandoc也出了问题，参考这里解决的。  
+<https://zhuanlan.zhihu.com/p/508457566>
+
 ## 域名
 这个没啥好说的，cloudflare配一下CNAME，github settings里改一下，source目录里面写个CNAME完事。
