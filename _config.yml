@@ -105,3 +105,9 @@ deploy:
   type: git
   repo:
     github: https://github.com/Fros1er/Fros1er.github.io.git,gh-pages
+
+mathjax:
+  enable: true
+  single_dollars: true # enable single dollar signs as in-line math delimiters
+
+

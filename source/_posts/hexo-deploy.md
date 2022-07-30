@@ -5,9 +5,9 @@ tags:
 ---
 
 参考：
-https://hexo.io/docs/github-pages
-https://github.com/YunYouJun/hexo-theme-yun/discussions/103
-https://blog.csdn.net/f554236884/article/details/105870070
+<https://hexo.io/docs/github-pages>  
+<https://github.com/YunYouJun/hexo-theme-yun/discussions/103>  
+<https://blog.csdn.net/f554236884/article/details/105870070>
 
 我是真没想到配个hexo的CI配了两个小时。。在这记一下
 

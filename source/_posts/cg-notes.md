@@ -1,0 +1,232 @@
+---
+title: cg-notes
+date: 2022-07-30 19:34:32
+tags:
+mathjax: true
+---
+
+有关图形学的一点点笔记。不过因为为一般会用ipad记，所以这里的就当复习用吧....  
+不会太详细，毕竟是笔记。
+
+# 数学
+
+## 齐次坐标
+<https://blog.csdn.net/zhuiqiuzhuoyue583/article/details/95228010>
+
+## 变换
+- 平移
+$$T=\begin
+{bmatrix}
+1&0&0&x \\
+0&1&0&y \\
+0&0&1&z \\
+0&0&0&1 \\
+\end{bmatrix}$$
+
+- 缩放
+$$S=\begin
+{bmatrix}
+x&0&0&0\\
+0&y&0&0\\
+0&0&z&0\\
+0&0&0&1\\
+\end{bmatrix}$$
+
+- 旋转  
+R的角标代表旋转轴
+$$R_{(1,0,0)}=\begin
+{bmatrix}
+1&0&0&0\\
+0&\cos\theta&\sin\theta&0\\
+0&-\sin\theta&\cos\theta&0\\
+0&0&0&1\\
+\end{bmatrix}$$
+$$R_{(0,1,0)}=\begin
+{bmatrix}
+\cos\theta&0&-\sin\theta&0\\
+0&1&0&0\\
+\sin\theta&0&\cos\theta&0\\
+0&0&0&1\\
+\end{bmatrix}$$
+$$R_{(0,0,1)}=\begin
+{bmatrix}
+\cos\theta&\sin\theta&0&0\\
+-\sin\theta&\cos\theta&0&0\\
+0&0&1&0\\
+0&0&0&1\\
+\end{bmatrix}$$
+
+- 绕任意轴(Rodrigues' rotation formula) 
+$$
+R_{(\vec{n}, \alpha)} = \cos(\alpha)I + (1 - \cos(\alpha))\vec{n}\vec{n}^T + \sin{\alpha} 
+\begin{bmatrix}
+    0&-n_z&n_y\\
+    n_z&0&-n_x\\
+    -n_y&n_x&0
+\end{bmatrix}
+$$
+推导过程见<https://www.qiujiawei.com/linear-algebra-14/>
+
+- 法向量变换
+$$
+\begin{aligned}
+\vec{n}^T\vec{v} = 0 \\
+\vec{n}^T(M^{-1}M)\vec{v} = 0 \\
+\because \vec{v'} = M\vec{v} \\
+\therefore \vec{n}^TM^{-1}\vec{v'} = 0 \\
+\because \vec{n'}^T\vec{v'} = 0 \\
+\therefore \vec{n}^TM^{-1}\vec{v'} = \vec{n'}^T\vec{v'} \\
+\vec{n}^TM^{-1}= \vec{n'}^T \\
+\vec{n'} = (M^{-1})^T\vec{n} \\
+\end{aligned}
+$$
+
+## 视图变换
+$M = M_{model} * M_{view} * M_{projection}$
+
+### 模型变换 Model
+上面提到的几种变换的组合，往世界里摆物体。  
+local space -> world space
+
+### 视图变换 View
+word space -> view space
+
+**这里用的都是右手系，但opengl是左手系。可能实际会有正负号的区别。**
+
+描述相机：位置$\vec{e}$，朝向(lookat/gaze) $\vec{g}$，上方向$\vec{t}$  
+有$\vec{g}\perp\vec{t}$，且两者均为单位向量。
+
+$M_{view}$把相机移到约定俗成的
+$$
+\begin{aligned}
+\vec{e} &= (0, 0, 0)\\
+\vec{g} &= (0, 0, -1)\\
+\vec{t} &= (0, 1, 0)\\
+\end{aligned}
+$$
+
+由于相机和物体的相对位置不变，画面不变，所以实际大概是直接规定相机在这然后移所有物体...
+
+移动包括一个平移一个旋转。有$M_{view} = T_{view} + R_{view}$。  
+其中，
+$$
+T_{view} = \begin{bmatrix}
+    1&0&0&-\vec{e}_x\\
+    0&1&0&-\vec{e}_y\\
+    0&0&1&-\vec{e}_z\\
+    0&0&0&1\\
+\end{bmatrix}
+$$  
+对于$R_{view}$，先求逆（方便！）：
+$$
+R_{view}^{-1} = \begin{bmatrix}
+    (\vec{g}\times\vec{t})_x&\vec{t}_x&-\vec{g}_x&0\\
+    (\vec{g}\times\vec{t})_y&\vec{t}_y&-\vec{g}_y&0\\
+    (\vec{g}\times\vec{t})_z&\vec{t}_z&-\vec{g}_z&0\\
+    0&0&0&1\\
+\end{bmatrix}
+$$  
+由于这玩意的列向量都是单位向量，还是正交的，所以是正交矩阵，转置一下就是$R_{view}$了。
+
+### 投影变换 Projection
+view space -> clip space
+
+把所有可见坐标变换到(-1.0, 1.0)的范围内，然后裁剪掉这部分之外的内容。
+
+#### 正交投影 Orthographic projection
+相机离的无限远，可见范围就变成一个立方体了。
+
+![](cg-notes/proj-1.png)
+
+规定可见的立方体的坐标l(left), r(right), b(bottom), t(top), f(far), n(near)。根据摄像机up=y, lookat=-z来定义。  
+然后把这个立方体变成(-1, 1)的标准立方体。
+
+显然先移动再缩放一下就好了。有：
+$$
+M_{ortho} = \begin{bmatrix}
+    \frac{2}{r-l} &0&0&0\\
+    0& \frac{2}{t-b} &0&0\\
+    0&0& \frac{2}{n-f} &0\\
+    0&0&0&1\\
+\end{bmatrix}
+\begin{bmatrix}
+    1&0&0&-\frac{r+l}{2}\\
+    0&1&0&-\frac{t+b}{2}\\
+    0&0&1&-\frac{n+f}{2}\\
+    0&0&0&1\\
+\end{bmatrix}
+$$
+
+#### 透视投影 Perspective projection
+摄像机是某个点，从这里投出一个四棱锥。规定四棱锥平行于底面的两个平面为zNear和zFar，渲染这个Frustum里的东西。
+
+![](cg-notes/proj-2.png)  
+把左边的frustum挤压成立方体，然后使用透视投影的方法。
+
+![](cg-notes/proj-3.jpg)  
+~~图是拿notability手画的所以非常丑陋~~  
+由图，根据相似三角形，有$y'= \frac{n}{z}y$。同理$x'= \frac{n}{z}x$。  
+所以有：
+$$
+M_{persp\rArr ortho} \begin{bmatrix}
+    x\\
+    y\\
+    z\\
+    1\\
+\end{bmatrix} =
+\begin{bmatrix}
+    nx/z\\
+    ny/z\\
+    ?\\
+    1\\
+\end{bmatrix} =
+\begin{bmatrix}
+    nx\\
+    ny\\
+    ?\\
+    z\\
+\end{bmatrix}
+$$
+
+$$
+M_{persp\rArr ortho} = \begin{bmatrix}
+    n&0&0&0\\
+    0&n&0&0\\
+    ?&?&?&?\\
+    0&0&1&0\\
+\end{bmatrix}
+$$
+
+那一行?要用两个特殊值：zNear平面点不动，zFar平面点的z不变来解。往里一代：
+$$
+M_{persp\rArr ortho} = \begin{bmatrix}
+    n&0&0&0\\
+    0&n&0&0\\
+    0&0&n+f&-nf\\
+    0&0&1&0\\
+\end{bmatrix}
+$$
+
+最后$M_{persp}=M_{ortho}M_{persp\rArr ortho}$。
+
+还有确定坐标的问题...。zFar(f)和zNear(n)是已知的，另外两个参数是摄像机的fov(一般是fovY)和宽高比aspect。  
+那么，
+$$
+\begin{aligned}
+\tan(\frac{fovY}{2})=\frac{t}{n}\\ aspect=\frac{r}{t}
+\end{aligned}
+$$
+根据对称性，$b=-t$，$l=-r$。
+
+由于摄像机是固定的，又有一些奇奇怪怪的对称性，所以可以化简下：
+$$
+M_{persp} = \begin{bmatrix}
+    \frac{1}{a\tan(\frac{fovY}{2})}&0&0&0\\
+    0&\frac{1}{\tan(\frac{fovY}{2})}&0&0\\
+    0&0&\frac{n+f}{n-f}&-\frac{2nf}{n-f}\\
+    0&0&1&0\\
+\end{bmatrix}
+$$
+
+---
+*未完待续*
