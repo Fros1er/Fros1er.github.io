@@ -228,5 +228,69 @@ M_{persp} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
+## 线性插值
+$lerp(\Delta x, v_0, v_1) = v0 + \Delta x(v1 - v0)$
+
+双线性插值：  
+![](/cg-notes/bilinear.jpg)  
+为插出5，先插m和n，再用m和n插出5。多维的同理。
+
+## 重心坐标
+对于三角形ABC内的任意点，都可以用$(x,y)=\alpha A+\beta B+\gamma C$表示。其中：
+- $\alpha+\beta+\gamma=1$，若不等于1则不在平面内。
+- $\alpha, \beta, \gamma>=0$。否则在三角形外。
+
+把点和ABC分别连起来，围成三个小三角形。A正对的三角形面积记为$S_A$，则$\alpha=\frac{S_A}{S_{ABC}}$。$\beta$，$\gamma$ 同理。（算面积用cross product）
+
+## 重心坐标插值
+三角形内一点$V_{\alpha, \beta, \gamma} = \alpha V_A + \beta V_B + \gamma V_C$。
+
+
+# 光照
+
+## 一些物理定义
+<https://zhuanlan.zhihu.com/p/389616851>  
+
+## 漫反射 Diffuse
+$I_d = K_dI_i\max(0, \vec{l}\cdot\vec{n})$
+
+用于Lambert物体（粗糙的那种）。  
+Lambert物体符合Lambert cosine law：$color\propto \cos{\theta}$。$\cos{\theta}$就是上面的$\vec{l}\cdot\vec{n}$那一项。
+
+符合各项同性，光从各个方向来没有区别，只和法线夹角有关系。
+
+$K_d$表示物体反射某种颜色光的能力（其实就是颜色）。
+
+虎书里用的代表RGB颜色，规定$K_d$和$I_i$的每个分量都在\[0,1\]之内，这样最终结果也小于1。
+
+公式里的max可以换成绝对值。这么搞叫two-sided lighting，相当于镜像再放置一个光源。
+
+## 环境光 Ambient
+$I_a = K_aI_i$
+
+$K_a$据说直觉上是场景内所有颜色的平均值....？
+
+如果要保证$I_d+I_a\leq1$，可以让$K_a+K_d\leq1$。
+
+## 镜面反射或者叫高光 Specular/Phong shading
+![](/cg-notes/Phong.png)  
+（图片的字母不太一样，e是V，少了一个I的反射R）
+
+$I_s=K_sI_i\max(\vec{R}\cdot\vec{V})^n$  
+Blinn Phong的话，是$I_s=K_sI_i\max(\vec{N}\cdot\vec{H})^n$
+
+$K_s$是镜面反射系数（反射某种颜色光的能力，和$K_d$差不多）。用来控制反射光颜色。
+
+n越大反射光越集中。实际上是让$\vec{N}\cdot\vec{H}$缩小的更快一点。
+
+Blinn Phong的效果更柔和一点。
+
+# Shading
+## Vertex-Based Diffuse Shading
+算顶点的颜色，然后重心坐标插值出三角形的颜色。
+
+## Phong Shading
+重心坐标插值出三角形中所有点的法向（本质是对原来光滑曲面的近似），然后用这个法向算颜色。
+
 ---
 *未完待续*
