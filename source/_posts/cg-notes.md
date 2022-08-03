@@ -245,6 +245,13 @@ $lerp(\Delta x, v_0, v_1) = v0 + \Delta x(v1 - v0)$
 ## 重心坐标插值
 三角形内一点$V_{\alpha, \beta, \gamma} = \alpha V_A + \beta V_B + \gamma V_C$。
 
+## TBN坐标系
+一个local的坐标系。三个轴是Tangent, Bitangent和Normal。前两者对应贴图的uv，normal当然是法线。
+
+可以用三角形的两条边的向量算出TB。N则是三角形本身的法向量。
+
+公式和推导过程见<https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/>。
+
 ## Perlin noise
 生成噪声的东西，公式看不懂...总之有。可以和纹理组合起来用。
 
@@ -349,6 +356,34 @@ $$
 D不是整数，所以用trilinear interpolation。在floor(D)和ceil(D)双线性插，结果再插一次。
 
 会导致Overblur的问题。原因是每次缩放一半相当于只有宽高比为1的情况。用各项异性过滤（Anisotropic Filtering）可以解决宽高比不为1，但斜着就不行了。
+
+## 纹理的应用
+### Environment map
+天空盒，用一个球或者cubemap记录无限远处的环境光照，这样可以只通过方向查询env map上的点。
+
+### 凹凸贴图 Bump map
+
+用贴图记录表面上的相对高度，从而改变法线。  
+二维：
+$$
+\begin{aligned}
+dp &= c[h(p+1) - h(p)] -用邻近的一点求切线 \\
+\vec{n(p)} &= [-dp, 1].normalized()
+\end{aligned}
+$$
+三维同理。求出du, dv，然后$\vec{n(p)} = [du, dv, 1].normalized()$
+
+求出的法线在TBN坐标系下。
+
+### 法线贴图 Normal map
+
+更好用的Bump map（以至于前者基本没人用）。
+
+贴图记录法线而不是高度差，直接替换即可。也在TBN下。
+
+### 位移贴图 Displacement map
+
+真正的移动顶点的位置。需要和三角形的顶点一一对应（所以顶点得足够多）。
 
 ---
 *未完待续*
