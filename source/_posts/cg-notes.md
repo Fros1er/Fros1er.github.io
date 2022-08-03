@@ -245,6 +245,8 @@ $lerp(\Delta x, v_0, v_1) = v0 + \Delta x(v1 - v0)$
 ## 重心坐标插值
 三角形内一点$V_{\alpha, \beta, \gamma} = \alpha V_A + \beta V_B + \gamma V_C$。
 
+## Perlin noise
+生成噪声的东西，公式看不懂...总之有。可以和纹理组合起来用。
 
 # 光照
 
@@ -291,6 +293,62 @@ Blinn Phong的效果更柔和一点。
 
 ## Phong Shading
 重心坐标插值出三角形中所有点的法向（本质是对原来光滑曲面的近似），然后用这个法向算颜色。
+
+# Texture
+提供一个Texture function（可以是函数或者查表，就是图片），和一个平面上点对texture function的对应关系，就可以贴纹理了（
+
+## 2D纹理
+提供一个2D坐标$(u, v)。习惯上u, v\in[0, 1]^2$，在此之外的砍掉整数部分。
+
+需要把物体的xyz坐标map到uv上。好像不用对应的很紧密，只要像那个形状就可以往上贴（不过肯定会失真）。
+
+### 平面投影
+$(u, v, *, 1) = M[x, y, z, 1]$  
+在平坦的表面上很好用，但和投影方向（一般是法线）垂直的地方就会出现那个面全部被map到texture的一个点上的情况...
+
+### 球坐标
+把xyz转到球坐标上，得到$\theta = \arccos(\frac{z}{r})$，$\phi = \arctan2(y, x)$。由于$(\theta, \phi) \in [0, \pi]\times[-\pi,\pi]$，有$u=\frac{\pi + \phi}{2\pi}, v=\frac{\pi-\theta}{\pi}$。
+
+地球仪用的这种。
+
+### 柱坐标
+先转到柱坐标再归一化。和球差不多。
+
+### Cubemaps
+球坐标在两极会变形，可以用一个立方体代替（不过有在边上不连续的缺点）。
+
+具体是把球上的点投到包着球的正方体上。$(x, y, z)\rightarrow(\frac{x}{z}, \frac{y}{z})$即可。正方体每个面有一个(u,v)。具体的坐标挺讲究。。。查书吧。
+
+## 纹理坐标插值
+三角形的每一个顶点存一个(u, v)。内部的某个点的uv通过插值得到。
+
+这里的插值不能在做齐次除法（v/w）后的screen space算（重心坐标会变），需要先在screen space算出重心坐标，然后通过：
+$$
+\alpha_w = \frac{\alpha/w_0}{\alpha/w_0+\beta/w_1+\gamma/w2}
+$$
+算出world space（MVP矩阵不会改变重心坐标所以在哪的都一样）的重心坐标。$\beta$和$\gamma$同理。
+
+具体为什么....我猜是因为齐次除法把z搞没了少了一个维度（w在persp后其实是z）。嗯推公式也能推出来，总之不管了。
+
+这玩意叫透视校正插值。
+
+## 取纹理值的方法
+插值出的uv不是整数。如果texture function是离散的，得有一个方法取值：
+- nearest neighbor：取最靠近的一个
+- bilinear：拿周围四个双线性插值
+- hermite：把bilinear用的$\Delta x$换成$3\Delta x^2 - 2\Delta x^3$
+- bicubic：拿周围十六个点
+- ...
+
+## MipMap
+
+解决texture太大的问题（屏幕上的一个像素对应texture的多个像素）。
+
+本质是范围查询。对屏幕上的某个点o，找邻近两点（上和右）a, b。取mipmap level $D = \log_2{\max(|oa|, |ob|)}$。D代表在第几层会取到一个像素。
+
+D不是整数，所以用trilinear interpolation。在floor(D)和ceil(D)双线性插，结果再插一次。
+
+会导致Overblur的问题。原因是每次缩放一半相当于只有宽高比为1的情况。用各项异性过滤（Anisotropic Filtering）可以解决宽高比不为1，但斜着就不行了。
 
 ---
 *未完待续*
