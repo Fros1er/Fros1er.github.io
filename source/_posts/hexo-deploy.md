@@ -11,6 +11,8 @@ tags:
 
 我是真没想到配个hexo的CI配了两个小时。。在这记一下
 
+<!-- more -->
+
 ## Github Actions
 ~~结论：`actions/checkout@v2`（包括v1和v3）的submodule不好用（也许是我哪里配错了，但最后也不成功）。  
 来来回回照着各种地方的配置文件配了一遍，都报`WARN no layout`。  
