@@ -14,7 +14,12 @@ Vector寄存器长度是厂商可选的。可以是64, 128, ..., 2048bits。
 
 `uint vsetvlmax_e<len><group>()`: 返回寄存器最大能操作多少个len bit的元素。如`vsetvlmax_e32m1()`。
 
-`reg_type vfmv_v_f_f32m1(f, vl)`：返回一个每个元素初始化为f的reg_type。vl代表寄存器操作几个数，`0 <= vl <= vlmax`。f32m1对应`vfloat32m1_t`，`_v`代表向量寄存器，`_f`代表浮点数。
+`reg_type vfmv_v_f_f32m1(f, vl)`：返回一个每个元素初始化为f的reg_type。vl代表寄存器操作几个数，`0 <= vl <= vlmax`。f32m1对应`vfloat32m1_t`，`_v`和`_f`见下：
+1. v：向量寄存器
+2. f：浮点数寄存器
+3. i：立即数
+4. x：普通寄存器
+5. s：向量寄存器的第0位（标量寄存器）
 
 `reg_type vle32_v_f32m1(addr, vl)`：从addr开始读取vl个数据。f32m1同上。这条是连续访存，还有固定间隔跳跃访存和index间接访存。
 
