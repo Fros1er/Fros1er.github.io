@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.froster.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="SUSTechCS109ProjectGuide 南方科技大学CS109计算机程序设计基础期末project的一些指南 仍在持续更新中。欢迎讨论和PR。 作者QQ号是815559068。有问题私戳或者直接在互助群@Froster问。 写在前面 每学期都会看到基本所有的同学写project的时候都会在屎山里挣扎... 于是就有了这个东西。基本上是写代码需要知道，但是上课不会教你的内容。你也可以把它当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="妮可java project指南">
+<meta property="og:url" content="https://blog.froster.icu/SUSTechCS109ProjectGuide/">
+<meta property="og:site_name" content="Froster&#39;s blog">
+<meta property="og:description" content="SUSTechCS109ProjectGuide 南方科技大学CS109计算机程序设计基础期末project的一些指南 仍在持续更新中。欢迎讨论和PR。 作者QQ号是815559068。有问题私戳或者直接在互助群@Froster问。 写在前面 每学期都会看到基本所有的同学写project的时候都会在屎山里挣扎... 于是就有了这个东西。基本上是写代码需要知道，但是上课不会教你的内容。你也可以把它当">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.froster.icu/SUSTechCS109ProjectGuide/img/ProjGuide-1.png">
+<meta property="article:published_time" content="2022-11-16T08:56:01.000Z">
+<meta property="article:modified_time" content="2025-02-07T03:08:23.721Z">
+<meta property="article:author" content="Froster">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.froster.icu/SUSTechCS109ProjectGuide/img/ProjGuide-1.png">
+
+<link rel="canonical" href="https://blog.froster.icu/SUSTechCS109ProjectGuide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>妮可java project指南 | Froster's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Froster's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.froster.icu/SUSTechCS109ProjectGuide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Froster">
+      <meta itemprop="description" content="一些垃圾话">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Froster's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          妮可java project指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-16 16:56:01" itemprop="dateCreated datePublished" datetime="2022-11-16T16:56:01+08:00">2022-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-07 11:08:23" itemprop="dateModified" datetime="2025-02-07T11:08:23+08:00">2025-02-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="sustechcs109projectguide">SUSTechCS109ProjectGuide</h1>
+<p>南方科技大学CS109计算机程序设计基础期末project的一些指南</p>
+<p>仍在持续更新中。欢迎讨论和PR。</p>
+<p>作者QQ号是<code>815559068</code>。有问题私戳或者直接在互助群@Froster问。</p>
+<h2 id="写在前面">写在前面</h2>
+<p>每学期都会看到基本所有的同学写project的时候都会在屎山里挣扎...</p>
+<p>于是就有了这个东西。基本上是写代码需要知道，但是上课不会教你的内容。你也可以把它当作一个Q&amp;A。</p>
+<p>随项目还会提供一个库，里面有音乐播放器，EventCenter，可设背景图的JPanel和永远是方形的JPanel。</p>
+<p>这篇文章的博客链接：<a href="https://blog.froster.icu/SUSTechCS109ProjectGuide/" class="uri">https://blog.froster.icu/SUSTechCS109ProjectGuide/</a><br />
+这篇文章的github链接：<a target="_blank" rel="noopener" href="https://github.com/Fros1er/SUSTechCS109ProjectGuide/" class="uri">https://github.com/Fros1er/SUSTechCS109ProjectGuide/</a></p>
+<p>各位同志依据自己水平酌情观看。有些东西可能对你们过于复杂了。（我对你们的水平的分布完全没概念，非常抱歉！）</p>
+<p>但是看不懂也不要说老师没讲，就开摆了。大伙都是靠自学过来的，只能说大学教育是这样的。。。总之遇见不懂的就思考，然后问，无论是问搜索引擎还是问我还是在互助课堂里问。如果回答的内容也不懂，接着问。使用递归学习法(乐)。</p>
+<p>这玩意没想象中那么复杂，计算机这种东西有兴趣做的话什么都学得会。加油捏()</p>
+在开头的最后附上一句吧。
+<blockquote>
+<p>"In the information age, the barriers just aren’t there," he said. "The barriers are self-imposed. If you want to set off and go develop some grand new thing, you don’t need millions of dollars of capitalization. You need enough pizza and Diet Coke to stick in your refrigerator, a cheap PC to work on, and the dedication to go through with it. We slept on floors. We waded across rivers."</p>
+By John Carmack.
+</blockquote>
+<span id="more"></span>
+<h2 id="免责声明">免责声明</h2>
+<p>话先说在这： <font size=7><b>不查重！！！！！！</b></font></p>
+<p><del>两年四个学期</del>三年五个学期里我没听说过任何一位被查重的人。更没听说过因为用了什么库被查重的人。放心。</p>
+<p>当然如果这学期有变动或者你复制粘贴，你真被查了，别找我。</p>
+<p>实在不放心，用什么东西前问老师或者sa。</p>
+<p>这学期用库好像扣大分。。。这篇博客里的库放心用就行，只是一些UI上的小功能，不会扣分的。担心的话把代码copy下来自己改改。</p>
+<h2 id="答辩流程">答辩流程</h2>
+<p>在15或16周会有答辩。时间不会太长，老师或者sa（具体是谁查看运气，会随机分到本lab的）会对着要求让你演示一遍功能，然后你展示一下bonus，结束。基本不会看你代码。</p>
+<p>所以你如果什么东西没写好，演示的时候避开是完全可以的（不排除老师挑一个地方指挥你演示，但总体没这么多时间）。</p>
+<h2 id="给自己打广告">给自己打广告</h2>
+<p><del>如果你想基本不写UI几百行速通这个project.....</del></p>
+<p><del>看看我的框架。用了就基本满分。</del></p>
+<p><del><a target="_blank" rel="noopener" href="https://github.com/Fros1er/2DBoardGameFrame/" class="uri">https://github.com/Fros1er/2DBoardGameFrame/</a></del></p>
+<p><del>用框架是有风险的，并且也需要一定的学习和理解。做选择的时候考虑清楚。</del></p>
+<p>我自己写了一下，发现对着样例一改只用写逻辑就可以搞定。这太imba了，估计会被本学期政策扣光光。所以欢迎借鉴...一部分。里面有很多复杂内容是为了通用性做的，有空我会更新一篇如何借鉴。</p>
+<h2 id="提问的智慧">提问的智慧</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way" class="uri">https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way</a></p>
+<p>大概影响我一生的一篇文章。一定要读一读...</p>
+<p>如果觉得太长不看，那就....<br />
+<font size=5><b>记得看报错，用搜索引擎，翻聊天记录。</b></font></p>
+<h2 id="项目管理和一些杂项">项目管理和一些杂项</h2>
+<h3 id="版本控制">版本控制</h3>
+<p>如果你要进寄系，请一定在project开始前学习git。如果你不进寄系，推荐在project开始前学习git。作用详见下面的链接。</p>
+<p>git的重要性...可以帮你们省去几个小时合代码的时间，同时在写出问题的时候知道自己动过哪里。还能给你们一分bonus。</p>
+<p>最重要的是，它是一项基本技能，只要你们在做计算机相关的事情就一定绕不开它。</p>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/896043488029600/896067008724000">廖雪峰的git教程</a></p>
+<h3 id="依赖管理">依赖管理</h3>
+<p>如果不做bonus，可以跳过这一段。但是如果你想播放个音频，大概是绕不开别人写好的库的。</p>
+<p>导入方法：把jar包下载到本地，然后： 1. IDEA左上角File-Project Structure<br />
+2. 点击窗口左边的Modules，然后点击窗口偏上方的Dependencies<br />
+3. 下面Export的上面有个+号，点击，然后选jars那个选项<br />
+4. 选择你下载的jar包，然后<strong>点窗口最下面的确认</strong></p>
+<p>然后你import的内容应该就不红了。</p>
+<h3 id="奇怪的问题">奇怪的问题</h3>
+<p>有时候会遇见一些代码全都变红的情况。。。尤其是把你队友的代码复制过来的时候。 提供三种解决方法。不一定有用。 1. IDEA左上角File-Open，然后确认你和你队友打开的文件夹是一样的。<br />
+2. File-Project Structure-Project-SDK。确认一下版本是不是一样的。<br />
+3. File-Invalidate Caches。可以解决一些玄学问题，大概率没用。</p>
+<h3 id="如何使用搜索引擎">如何使用搜索引擎</h3>
+<p>前面加上java swing，后面跟类名或者简略问题。比如：<br />
+java swing JButton<br />
+java swing listener<br />
+java swing make jPanel square</p>
+<p>推荐在百度以外的地方搜英文！！！！</p>
+<p>能用谷歌用谷歌，用不了就必应国际版，不要用百度！</p>
+<p>然后你会看到一个叫stackoverflow的网站。点就对了。CSDN里面答辩居多，少看。</p>
+<h1 id="设计">设计</h1>
+<h2 id="放弃demo">放弃demo</h2>
+<p>前排提醒：理解demo不一定比你从头写一个简单。demo的有些设计可能会拖累你的项目进度。而且这也是个bonus。</p>
+<h2 id="全局访问非常重要">全局访问（非常重要！）</h2>
+<p><del>虽然实际的大工程不推荐这么做，但那是你工作（或者至少大三）以后的事情了。</del><br />
+大工程好像也这么搞。狠狠地写单例和public static！</p>
+<p>在一个游戏程序中，你的<strong>棋盘，GUI，玩家列表，AI</strong>等在逻辑上都有且仅有一份。而且，它们都在程序很多地方里需要。比如棋盘在GUI，行棋逻辑，AI里都会用到。比起把一个棋盘变量想办法扔来扔去，不如让它全局唯一并且可随处访问和修改。</p>
+<p>这个方法的缺点是难以追踪变量到底是在哪里修改的，<strong>以及需要在适当的时候重置这些变量</strong>（比如游戏结束时清空棋盘）。逻辑清晰的话这都不是问题，如果设计得当百利而无一害。</p>
+<p>具体做法：新建一个类，把全局变量设为public static就好。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SomeClassname</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Grid[][] yourBoard; <span class="comment">// init elsewhere</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// somewhere in your code...</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ElseWhere</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">someMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (SomeClassname.yourBoard[<span class="number">0</span>][<span class="number">0</span>].sth) &#123;</span><br><span class="line">            <span class="comment">//do something</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>还有一个叫<strong>单例</strong>的更好用的设计模式，用来获取某个类的全局唯一实例。好奇的话可以去看看。（记得抄双重锁的版本，swing是多线程）</p>
+<h2 id="使用工具类">使用工具类</h2>
+<p>假设你要写一个存档功能。存档自然是存棋盘。无论你是在哪里有个棋盘变量还是有个全局的棋盘，你得有个地方放存档的代码。</p>
+<p>有些小同志就直接写按钮里了，然后队友问他存档代码在哪，他说文件A里有五分之一，文件B里有五分之二，等等等等。存档出了bug得先花上十分钟找代码在哪，令人崩溃。找到了以后发现你一个存档的代码copy了n次，你忘了一个地方导致n-1个按钮好使一个不好使，令人想去工学院天台看看。</p>
+<p>这里的建议是写个类： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Saver</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">(String path)</span> &#123;</span><br><span class="line">        ... <span class="comment">// get board and do something to save</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// load</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// everything related to save game</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Saver</span><span class="params">()</span> &#123;&#125; <span class="comment">// 防止这个类被实例化。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>然后你在十个地方有不同的存档按钮，只要在每个地方写一行<code>Saver.save(path);</code>就结束了。</p>
+<p>工具类的意义是把在很多乱七八糟的地方重用并且功能属于一个大类的<strong>静态</strong>方法放在一起，这样好找也好改动。</p>
+<h2 id="游戏逻辑和界面的关系">游戏逻辑和界面的关系</h2>
+<p>前端是你显示出来的东西（JLabel），后端是抽象的东西（String）。swing这种古早的玩意...非常适合大伙被”怎么让这两个东西同步“折磨。即，我改了一个String怎么让对应的（可能有好几个）JLabel一块改？</p>
+<p>另外，一定一定一定一定不要把游戏逻辑直接写在某某listener里，要不你完全没法写AI和联网对战！就算你不看我下面写的东西，你也一定要在你的listener里拿坐标啥的去调用一个单独的方法，这样你的AI和联网部分也可以做同样的事情。。</p>
+<h3 id="耦合">耦合</h3>
+<p>前后端不分离，让你的整个棋盘变成一个全局的继承JPanel的类。棋盘的每一个格子（象棋棋盘也可以是背景是十字线的格子）继承JPanel，存在棋盘类里面。格子上的棋子（继承JLabel）存在格子里面。让你的格子可以全局访问，使走棋的时候可以拿到任意格子和任意棋子在swing里对应的东西。这样，在改动格子内容时就可以不用费劲去做同步，直接操作JLabel一类的东西就好了。</p>
+<p>游戏整体的设计大体是写一个<code>void moveTo(Point from, Point target) &#123;...&#125;</code>。开一个全局的临时变量存一个位置。第一次点击的时候设定这个位置(<code>from</code>)，第二次点击如果判断能走就调用<code>moveTo(from, pos_just_clicked)</code>，把棋对应的JLabel啥的挪个地（可以移过去，或者干脆删掉再在那个位置上new个新的）。如果不能，清空临时变量。结束。在这同时可以做高亮走棋位置。</p>
+<p>这个方法简单粗暴，比用SA给的框架好写一百倍。MVC？Observer？那是什么（</p>
+<p>缺点也很多。比如，你走完一步棋要判断被吃的是不是将/帅，要切换玩家，要通知你的AI该走下一步棋了，还有撤回/重做，联网对战，其他UI组件的更新……这些全部被扔进了你的走棋方法里，让它变得又臭又长，牵一发而动全身。这种设计在这个体量的project下是完全可以用的，只是你和你的队友可能会配合的比较痛苦。</p>
+<h3 id="解耦">解耦</h3>
+<p>前后端分离。你的棋盘，格子，棋子类不再继承swing的组件。前端只管在某一个时候读取你只存储数据的棋盘数组，把整个可见的棋盘重新画一遍（暴力一点，反正一共也没几个格子）。如果你不想暴力，单独通知前端变动的位置当然更好。</p>
+<p>什么时候重新画呢？看看底下的<strong>事件系统</strong>一节。在moveTo结束后广播一个<code>BoardChangeEvent</code>事件，让前端注册一下。</p>
+<p>好处是，前端只需要管怎么绘制，完全不用管棋是怎么走的。后端只管发事件出去，完全不用管游戏逻辑执行完会造成什么影响。前端如果要加新功能，比如找个地方显示被吃的棋子，完全不用管后端怎么写的，只要call一下负责后端的哥们让他发棋子被吃的事件就好了。后端的哥们发事件也简单，事件只需要传递“红色的象被吃了”，象原来在哪可以完全不用管，那个是<code>BoardChangeEvent</code>管的。</p>
+<p>然后玩家变动发playerChangeEvent，游戏结束发GameEndEvent，等等等等。前端处理起来也方便，监听不同事件绘制不同UI即可。</p>
+<p>（总之，至少合作起来非常方便。</p>
+<p>而且监听事件的不一定只是前端。你的AI，联网对战，甚至后端不同组件（比如玩家信息统计，成就系统）都可以用这套通信。把模块拆散特别有利于解决bug，因为当你的棋点了没反应的时候，你可以很清楚的知道是事件没发还是逻辑出了问题还是前端没渲染，问题可以很快得到定位。</p>
+<h3 id="解耦一半">解耦一半</h3>
+<p>我刚全说的是后端怎么通知前端。后端咋得到通知呢？</p>
+<p>写个方法，格子被点了就调用。这里就不用写事件了，没那个必要。</p>
+<p>你的联网对战和AI也一样可以调这个方法()</p>
+<p>没那个必要的原因是多种输入最后通过<strong>确定的几种方法</strong>导向<strong>确定的一种</strong>结果（棋盘按规则变动。棋盘变动只能由走棋或撤回或重做导致。），而格子的变动这<strong>一种</strong>改变会导向<strong>设计时不能决定的多种不相关的</strong>结果（UI变化，联网对战的另一个客户端得到通知）。</p>
+<p>有点抽象，希望你们看得懂吧。。看不懂一定问我，我好补充。</p>
+<h4 id="序列化">序列化</h4>
+<p>解耦的一个额外的好处：如果你的类是独立的，只要里面所有的成员变量都可以序列化（实现了Serializable接口，原始类型，数组，Collection容器等），那就可以让java自己直接把一个实例连带当前成员变量的值写出到一个文件里，有需要的时候可以读进来变会这个实例。存档读档的时候特别方便。</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-serialization.html" class="uri">https://www.runoob.com/java/java-serialization.html</a></p>
+<p>如果你用了序列化，老师会直接给你错误存档检查的分，因为错误文件根本读不进来。（最好自己去向老师确认一下）</p>
+<h3 id="全局事件系统">全局事件系统</h3>
+<p>前排提醒：这里说的不是Observer，是个人觉得比Observer好写一万倍的Publisher/Subscriber。强烈推荐不用demo给的Observer。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">EventCenter.subscribe(<span class="string">&quot;event name&quot;</span>, (e) -&gt; &#123;</span><br><span class="line">    <span class="type">ExampleEvent</span> <span class="variable">casted</span> <span class="operator">=</span> (ExampleEvent) e;</span><br><span class="line">    System.out.println(casted.a);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// somewhere else:</span></span><br><span class="line">EventCenter.publish(<span class="string">&quot;event name&quot;</span>, <span class="keyword">new</span> <span class="title class_">ExampleEvent</span>(<span class="number">10</span>));</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">此时(e) -&gt; &#123;...&#125; 里写的东西会被调用。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>这玩意和swing的监听器差不多。在EventCenter注册（订阅）一个函数，在事件发生时发布一个事件。此时，所有对这一事件注册过的函数都会被调用。</p>
+<p>EventCenter的实现大概只有不到15行。直接复制粘贴成你自己的就行。</p>
+<h1 id="回调函数">回调函数</h1>
+<p>既然说到了注册一个函数，那...欢迎来到异步编程的世界！（函数=方法，叫法不同罢了）</p>
+<p>即使你不用事件系统，你也要用swing的监听器，也是异步的。所以我把这一章单独拉出来。它很重要。</p>
+<p>你们在lab和oj里写的代码都是同步的。代码从main函数开始，从头一行接着一行执行到尾，结束。这对于UI来说完全不行。你不知道用户什么时候会点击一个按钮，所以有关这个按钮的一段代码是不知道什么时候执行的。</p>
+<p>所以，需要转变一下思路...我们把一些代码绑定给这个按钮，让它在点击的时候调用我们给它的这些代码。这段代码有很多叫法，本文叫他“回调函数(callback)”。</p>
+<p>回调函数和它前后的代码，无论挨的多近，都没有任何执行上的关系。你在前面写了个Integer a = 1，在回调函数里面取a的值，它可能会是任意值，因为a有可能在回调函数被实际调用之前，在别的地方被改了。你写下一个回调函数只是在“绑定”。</p>
+<p>除了把回调函数绑定给UI以外，当然还可以把它绑定给事件。事件和UI（其实也是事件）都满足“不知道什么时候会发生，发生时需要执行一段代码”的条件。</p>
+<h2 id="lambda捕获变量全局变量">lambda，捕获变量，全局变量</h2>
+<p>你们肯定会在乱七八糟的地方抄到<code>(a, b, c) -&gt; &#123;...&#125;</code>这个形式的代码。它叫lambda表达式。</p>
+<p>它和这玩意完全等价： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Lambda</span> &#123;</span><br><span class="line">    Object x, y, z...;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Lambda</span><span class="params">(Object x, y, z...)</span> &#123;<span class="built_in">this</span>.x = x...;&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">call</span><span class="params">(a, b, c)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>call长的很像lambda本身，不用讲了。xyz是lambda捕获的变量。捕获是指： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">JLabel l;</span><br><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">button.addActionListener(e -&gt; &#123;</span><br><span class="line">    l.setText(<span class="string">&quot;aaa: &quot;</span> + a);</span><br><span class="line">    Global.b = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line">l.setText(<span class="string">&quot;bbb&quot;</span>);</span><br></pre></td></tr></table></figure> 你会发现lambda里面用了外面的l和a。对于实例，它拿了一份外面的引用进来以便之后用。对于基础类型，它复制了一份值进来。这个l在里面外面是互通的，就像你把ArrayList传到普通方法里面一样。</p>
+<p>lambda的作用的话，它就是个方法。可以被写到一个变量里，等待<strong>以后被调用</strong>的方法。没了。</p>
+<p>对于全局变量...你该怎么用怎么用。在哪都一样。我推荐少用捕获的变量（UI的除外），多用全局变量。</p>
+<h1 id="一轮完整的执行过程">一轮完整的执行过程</h1>
+<p><img src="img/ProjGuide-1.png" /></p>
+<p>(n)只是个标记，为了方便表达跳转回来。不代表真正的流程。</p>
+<p>有几个点： 1. 判断当前玩家的方法应该在走棋方法的最后调用。如果不是本地玩家，应该屏蔽掉前端的一切输入。反之记得重新打开。 2. 判断玩家的方法和走棋的方法直接返回void就好。返回之后啥也不干让系统自己等下一次走棋方法触发，无论是AI还是前端还是网络。 3. 通知AI的意思是调用下面人机对战一节写的那段玩意。走棋方法在thread里面调用，通知AI的那个方法也直接返回void就好。</p>
+<h1 id="速通java-swing">速通java swing</h1>
+<p><del>网上的教程普遍不太行...在这挖个坑。</del></p>
+<h2 id="组件">组件</h2>
+<p>swing最主要的就三种组件：<code>JPanel</code>（容器），<code>JLabel</code>（字和图），<code>JButton</code>（按钮）。它们的共同父类是<code>Component</code>。</p>
+<p>容器给里面装的东西一个空间并决定里面的东西如何排列(见布局管理器)，字、图、按钮、其他容器是“东西”。</p>
+<p>所以设计UI的时候，想想哪些部分是强关联的。比如，你需要展示棋盘和游戏状态。显然这里有两个JPanel，一个是棋盘，另一个是某一个状态栏。状态栏里面有行棋方、得分等JLabel，棋盘里的每个格子是一个JPanel，格子里面是棋子的JLabel。</p>
+<p>你的窗口是<code>JFrame</code>，里面自带一个<code>JPanel</code>。</p>
+<p>具体有什么方法...还是得网上的教程。我写不全。</p>
+<h2 id="显示出问题了">显示出问题了</h2>
+<p>多见于改了什么东西不立即起作用。这时只需要对有问题的组件（或者它的父组件）写下两行神奇的代码：<br />
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">component.revalidate();</span><br><span class="line">component.repaint();</span><br></pre></td></tr></table></figure></p>
+<p>它就有极大概率起作用。</p>
+<h2 id="继承swing组件">继承swing组件？</h2>
+<p>如果你用耦合的方法，狠狠地继承！</p>
+<p>如果你不用，继承swing组件的唯一场合是你要用现有组件构建新组件，为它加入新功能或加限制（比如说永远是方的JPanel）。判断是不是这种情况的方法是看看你需不需要重写里面的方法。如果不需要，简单的找个地方，new一个组件，调用方法，添加进别的组件，结束。</p>
+<h2 id="listener">Listener</h2>
+<p>我刚才在回调函数一节讲过了。它们是一个东西。</p>
+<p>有各种Listener。用的多的是：Button的<code>ActionListener</code>（按钮点击），JPanel的<code>MouseListener</code>。写<code>MouseListener</code>记得用<code>MouseAdapter</code>，开一个boolean，在按下时设为true，抬起时设为false并调用相关方法。不要用任何带clicked的东西（重点是ed这个后缀），否则会变得不幸（有几率点了没反应）。</p>
+<p>给个示例： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">panel.addMouseListener(<span class="keyword">new</span> <span class="title class_">MouseAdapter</span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">pressed</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mousePressed</span><span class="params">(MouseEvent e)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.mousePressed(e);</span><br><span class="line">        pressed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mouseReleased</span><span class="params">(MouseEvent e)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.mouseReleased(e);</span><br><span class="line">        <span class="comment">// your code here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="jdialog">JDialog</h2>
+<p>可以自定义的一个弹窗，直接往里放组件就行。</p>
+<h2 id="布局管理器">布局管理器</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011291072/article/details/127009177" class="uri">https://blog.csdn.net/u011291072/article/details/127009177</a><br />
+常用GridLayout和BorderLayout。</p>
+<p>建议不要把组件的宽高写死...不过你们随意，怎么方便怎么来。</p>
+<p><strong>做窗口缩放的不要听信CSDN的鬼话去重写paint方法啥的，布局管理器完全够用！</strong><br />
+(棋盘除外，让棋盘保持正方形建议用本博客里的库)</p>
+<h2 id="cardlayout">CardLayout</h2>
+<p>你会需要主界面，设置界面和游戏界面在一个窗口(JFrame)里的。用CardLayout。用法自己搜。</p>
+<h1 id="如何写bonus">如何写bonus</h1>
+<h2 id="基础部分">基础部分</h2>
+<h3 id="打乱">打乱</h3>
+<p><code>Collections.shuffle()</code>打乱一维数组，然后再对应到二维去。</p>
+<h2 id="人机对战">人机对战</h2>
+<p>如何把AI嵌到代码里是个难点。一般来说，如果你们没有把下棋的代码全扔进Listener，而是有<strong>一个能全局访问的函数和全局访问的棋盘</strong>，那么就只需要在切换玩家的时候检查下一个玩家是不是AI，如果是，让AI拿棋盘计算，然后直接调用那个下棋的函数就完事了。</p>
+<p>另一个点是怎么让AI有思考过程（延时）。我直接贴代码吧。<br />
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>); <span class="comment">//1000 milliseconds</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// your code after delay here</span></span><br><span class="line">&#125;);</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure> 这里也是个异步方法（直接叫多线程更好）。注意：在AI延时的时候所有Listener都是可以触发的（UI可以正常点）。记得屏蔽棋盘上的点击事件。</p>
+<p>不要在没有new Thread出现的时候随便找个地方就写sleep，大概率会卡住你的整个UI！</p>
+<p>由于这里是异步，所以Thread后的代码不要依赖thread里面的结果，这玩意的代码跑完了以后AI百分百还没落子，所以也不要依赖这个。</p>
+<p>ab剪枝没那么好做，它是大三人工智能课上三个project之一。注意时间分配。btw，如果理解了原理，代码是可以直接抄的：<a target="_blank" rel="noopener" href="https://oi-wiki.org/search/alpha-beta/" class="uri">https://oi-wiki.org/search/alpha-beta/</a></p>
+<h2 id="用户平台">用户平台</h2>
+<p>我看project解读里写着多个frame...........it works，但真的不要这么干。</p>
+<p><strong>CardLayout切换页面，JDialog弹窗。</strong>。上学期用JDialog是个bonus。</p>
+<p>swing的表格有一点点难用。如果不会用的话可以循环添加JLabel，然后用GridLayout布局（指分隔和换行）。</p>
+<h2 id="主题切换">主题切换</h2>
+<p>可以弄个<code>Theme</code>类，里面存些图片，字体啥的。然后找个地方存个<code>public static Themes[] themes;</code>，还有<code>public static Theme currentTheme；</code>。在所有设定背景图片，设定字体的时候都用<code>currentTheme.picForSomewhere</code>来拿到对应的东西。</p>
+<p>切换主题时，更改currentTheme为themes里的某个主题，然后直接把你的JFrame或者最上层的JPanel删了重新创建一遍。简单粗暴有用。如果这个有困难，找个文件存currentTheme的编号，然后切换主题的时候提示下次重启游戏有效。</p>
+<p>反正你做了，虽然麻烦点，但老师不会不给你加分的。</p>
+<h2 id="音效">音效</h2>
+<p>调我的库，谢谢。</p>
+<h2 id="可行位置提示">可行位置提示</h2>
+<p>我猜你们会有个点击选择棋子的环节。在那个时候计算所有可行位置，然后设置那些位置的JPanel就好了。最简单的是： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">panel.setBackground(java.awt.Color.YELLOW); <span class="comment">//设个背景色</span></span><br><span class="line">panel.setOpaque(<span class="literal">true</span>); <span class="comment">//让java把panel的背景色显示出来</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="悔棋-加载棋局步骤显示">悔棋 &amp; 加载棋局步骤显示</h2>
+<p>搞一个ArrayList（其实起Stack的作用，直接用Stack更好），记录每一步从哪个位置拿的子，放到了哪个地方去。如果有子被吃了，记录被吃的是什么颜色的什么子。（或者记录翻开了哪个位置，总之记录每一步做了什么）。每走一步add这些信息到arrayList末尾。</p>
+<p>悔棋的时候取arrayList末尾的信息出来，把子从现在的位置放回去，再把被吃的子放回棋盘，删掉arrayList末尾的信息，结束。</p>
+<p>然后你会发现，如果开局的子位置不变，按照这个ArrayList一步步推下去就可以复原整个棋局。存档里存这个ArrayList和开局的棋盘，然后读档步骤显示和回放就都有了。</p>
+<p>步骤显示需要延时。直接拿AI那里的代码，循环放子，放完一个sleep一下。同样，要记得屏蔽玩家点击，做好玩家切换（小心AI发疯）。</p>
+<h2 id="联网对战">联网对战</h2>
+<h3 id="socket编程">Socket编程</h3>
+<p>原理不展开了，好奇的话去看<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1EW411u7th/?p=29" class="uri">https://www.bilibili.com/video/BV1EW411u7th/?p=29</a>和后面的两p。</p>
+<p>要让两个（或者多个）程序通过网络通信，需要有一个程序作为服务器接收连接，其他的程序对应的就是客户端发起连接。客户端通过ip和端口定位服务器。端口是自己设置的，不和已有端口冲突就ok。ip的话，只要所有电脑都连着校园网，通过ipconfig命令就可以拿到ip。命令怎么用自己查。</p>
+<p>接下来就是代码环节：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yiwangzhibujian/p/7107785.html" class="uri">https://www.cnblogs.com/yiwangzhibujian/p/7107785.html</a>。只看这篇的前两章你就能来回收发文本了。收到文本的时候解析一下，然后按需调用。</p>
+<p>收发是阻塞的，记得放到线程里，和AI那块一样。</p>
+<h3 id="消息传递">消息传递</h3>
+<p>每次通信发的消息...看情况吧。加入游戏的时候服务器给客户端发颜色，玩的时候服务端和客户端交换点击坐标和游戏结果什么的。能发文本的话（也可以用别的inputstream/outputstream，甚至可以序列化对象），有传什么的需求都能满足。</p>
+<p>还记得悔棋那边写了啥不？</p>
+<h3 id="状态同步以及独立的服务端">状态同步，以及独立的服务端？</h3>
+<p>状态同步指的是，两个玩家下棋的时候，每一次成功的走棋后两边的棋盘要完全一致。虽然作为一个简单的，依托 答辩的下棋游戏，偶尔出点bug不同步其实也没啥关系，重开一局就好了(乐)。</p>
+<p>最简单的方式是不同步。客户端A改自己的棋盘，然后往B发怎么动，B收到A的指令改自己的棋盘，然后接收前端点击事件再改自己棋盘，往A发，如此反复。对于一个project来说这没有问题。</p>
+<p>实际的游戏里会更复杂一点（不建议做这些，不同步已经够用了）。我们假定客户端是恶意的，会发错误指令。那么，客户端还是往服务端发指令，发完不改自己棋盘。服务端接收后判断指令是否合法，若不合法对客户端进行一个通知，若合法则走棋，然后返回服务端走棋后的棋盘。客户端接收棋盘后全部重绘一遍。</p>
+<p>这种情况下，可以用任意一个客户端当服务器，也可以单独把抽象的棋盘和走棋逻辑写进单独的服务器里（不推荐），游戏开始前两个客户端分别连接服务器。后者的好处...你有空的话可以卷一个真正的联网对战平台，但是算了...我写这玩意都得写好久。</p>
+<h2 id="可执行文件打包">可执行文件打包</h2>
+<p>正统做法是exe4j。但是打成一个jar文件，然后写个.bat或者.exe用命令行执行jar也是有分的。</p>
+<h2 id="动画">动画</h2>
+<p>用swing做真正的棋子运行动画就别想了。你的时间宝贵。（真正的万里挑一的大佬请无视这句话。个人估计，这么做就没法用Layout了，得手动绘制图像或者至少改组件坐标，超麻烦）。</p>
+<p>有一个投机取巧的办法是GIF。真正的动画主要问题在于没法在GridLayout里让组件移到两个Grid中间，以及很难做组件在格子内的连续大小变换。但如果只是动图的话就没有这个问题了。你可以做点科幻棋子，给每个棋初始状态播一个晃来晃去的gif(正经叫idle，或者待机动画)。然后走棋的时候棋子来个传送特效GIF，目标位置也来一个。被吃了就叠一个透明爆炸GIF上去然后给下面的棋子来一个渐隐。非常炫酷！</p>
+<h2 id="计时器">计时器</h2>
+<p>抄AI那里的代码，每秒改一下JPanel显示的数字就行。</p>
+<h1 id="bonus计分">bonus计分</h1>
+<p>在上上学期，读取存储游戏的GUI，JFileChooser选存档，用户属性（登录等），棋盘大小适应窗体缩放（用我的库谢谢喵），改棋盘图片，背景图片，鼠标划过格子或棋子有颜色变化（mouseEntered， mouseExited），计时器，这些都是有规定的bonus分的。人机不同算法拿到的bonus分也是不一样的。建议酌情去做一下。</p>
+<h1 id="五个神奇的class">五个神奇的class</h1>
+<p><strong>现在用库会扣分了。所以我把这几个类用的license改成了wtfpl，你们想复制随便复制，完全不需要署名！</strong></p>
+<p><strong>记得稍微改改逻辑和变量名，否则被发现了别来怪我。</strong></p>
+<p>你们从别的地方抄的大部分也都长得差不多而且九成没我这个好，所以大胆一点()</p>
+<h2 id="导入">导入</h2>
+<ol type="1">
+<li><del>去 <a target="_blank" rel="noopener" href="https://github.com/Fros1er/SUSTechCS109ProjectGuide/releases">github release</a> 页面下载最新的jar包。</del></li>
+<li><del>IDEA左上角File-Project Structure</del></li>
+<li><del>点击窗口左边的Modules，然后点击窗口偏上方的Dependencies</del></li>
+<li><del>下面Export的上面有个+号，点击，然后选jars那个选项</del></li>
+<li><del>选择你下载的jar包，然后<strong>点窗口最下面的确认</strong></del></li>
+<li><del>在需要的时候<code>import com.froster.utils.*</code>。</del></li>
+</ol>
+<p>直接复制<a target="_blank" rel="noopener" href="https://github.com/Fros1er/SUSTechCS109ProjectGuide/tree/main/src/main/java/com/froster/utils">这里</a>的代码到自己的项目里。这样的话需要手动导入几个音乐相关的包，具体见<a target="_blank" rel="noopener" href="https://odoepner.wordpress.com/2013/07/19/play-mp3-or-ogg-using-javax-sound-sampled-mp3spi-vorbisspi/" class="uri">https://odoepner.wordpress.com/2013/07/19/play-mp3-or-ogg-using-javax-sound-sampled-mp3spi-vorbisspi/</a> 。</p>
+<h2 id="audioplayer">AudioPlayer</h2>
+<p>只支持wav格式的音频播放器。有三个静态方法：<br />
+<code>public static AudioPlayer playBgm(String path)</code><br />
+持续播放path（文件路径）指定的音频。播放完后会重播。</p>
+<p><code>public static AudioPlayer playSound(String path)</code><br />
+播放path指定的音频。播放完后不会重播。</p>
+<p><code>public static void stop()</code><br />
+停止播放。上面两个方法会返回一个类型为<code>AudioPlayer</code>的变量。调用它的stop方法即可停止对应的音频播放。</p>
+<p>不推荐手动调用<code>AudioPlayer.play()</code>。它会阻塞当前线程，然后把你的程序卡住。</p>
+<h2 id="gridpanel">GridPanel</h2>
+<p>一个布局管理器为<code>GridLayout</code>的<code>JPanel</code>，特点是里面的格子在改变大小时永远是方形。构造时需要传入宽和高各有几个格子。</p>
+<h2 id="backgroundimagepanel">BackgroundImagePanel</h2>
+<p>一个可以设背景图的<code>JPanel</code>。构造时传入<code>Image</code>对象。</p>
+<p><code>Image</code>对象可以通过<code>Image image = ImageIO.read(new File("path/to/image"));</code>拿到。</p>
+<p>上面两个Panel都可以直接替换JPanel，除了构造函数不一样没有任何副作用。</p>
+<h2 id="eventcenter和event">EventCenter和Event</h2>
+<p>见上面的事件系统。</p>
+<p>Event要单独说一下。lambda表达式里的参数e是<code>Event</code>。这个Event类是用于在事件发生时给回调函数传递信息用的，如果需要传递信息，你需要手动继承Event，在publish的时候传入你继承的类的实例，然后在lambda表达式里手动做一个强制类型转换，把它转成你实际传进去的那个类。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/cg-notes/" rel="prev" title="cg-notes">
+      <i class="fa fa-chevron-left"></i> cg-notes
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/cpp/" rel="next" title="一些c艹碎碎念">
+      一些c艹碎碎念 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sustechcs109projectguide"><span class="nav-number">1.</span> <span class="nav-text">SUSTechCS109ProjectGuide</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%8D%E8%B4%A3%E5%A3%B0%E6%98%8E"><span class="nav-number">1.2.</span> <span class="nav-text">免责声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%94%E8%BE%A9%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">答辩流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%99%E8%87%AA%E5%B7%B1%E6%89%93%E5%B9%BF%E5%91%8A"><span class="nav-number">1.4.</span> <span class="nav-text">给自己打广告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7"><span class="nav-number">1.5.</span> <span class="nav-text">提问的智慧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E6%9D%82%E9%A1%B9"><span class="nav-number">1.6.</span> <span class="nav-text">项目管理和一些杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-number">1.6.1.</span> <span class="nav-text">版本控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">1.6.2.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.6.3.</span> <span class="nav-text">奇怪的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="nav-number">1.6.4.</span> <span class="nav-text">如何使用搜索引擎</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BE%E5%BC%83demo"><span class="nav-number">2.1.</span> <span class="nav-text">放弃demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E8%AE%BF%E9%97%AE%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81"><span class="nav-number">2.2.</span> <span class="nav-text">全局访问（非常重要！）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">使用工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E9%80%BB%E8%BE%91%E5%92%8C%E7%95%8C%E9%9D%A2%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.4.</span> <span class="nav-text">游戏逻辑和界面的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%80%A6%E5%90%88"><span class="nav-number">2.4.1.</span> <span class="nav-text">耦合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E8%80%A6"><span class="nav-number">2.4.2.</span> <span class="nav-text">解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E8%80%A6%E4%B8%80%E5%8D%8A"><span class="nav-number">2.4.3.</span> <span class="nav-text">解耦一半</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">序列化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.4.4.</span> <span class="nav-text">全局事件系统</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">回调函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda%E6%8D%95%E8%8E%B7%E5%8F%98%E9%87%8F%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">lambda，捕获变量，全局变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E8%BD%AE%E5%AE%8C%E6%95%B4%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">一轮完整的执行过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9F%E9%80%9Ajava-swing"><span class="nav-number">5.</span> <span class="nav-text">速通java swing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">5.1.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%87%BA%E9%97%AE%E9%A2%98%E4%BA%86"><span class="nav-number">5.2.</span> <span class="nav-text">显示出问题了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BFswing%E7%BB%84%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">继承swing组件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listener"><span class="nav-number">5.4.</span> <span class="nav-text">Listener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jdialog"><span class="nav-number">5.5.</span> <span class="nav-text">JDialog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-number">5.6.</span> <span class="nav-text">布局管理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cardlayout"><span class="nav-number">5.7.</span> <span class="nav-text">CardLayout</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%86%99bonus"><span class="nav-number">6.</span> <span class="nav-text">如何写bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86"><span class="nav-number">6.1.</span> <span class="nav-text">基础部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E4%B9%B1"><span class="nav-number">6.1.1.</span> <span class="nav-text">打乱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E6%9C%BA%E5%AF%B9%E6%88%98"><span class="nav-number">6.2.</span> <span class="nav-text">人机对战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%B9%B3%E5%8F%B0"><span class="nav-number">6.3.</span> <span class="nav-text">用户平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E5%88%87%E6%8D%A2"><span class="nav-number">6.4.</span> <span class="nav-text">主题切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9F%B3%E6%95%88"><span class="nav-number">6.5.</span> <span class="nav-text">音效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A1%8C%E4%BD%8D%E7%BD%AE%E6%8F%90%E7%A4%BA"><span class="nav-number">6.6.</span> <span class="nav-text">可行位置提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%82%94%E6%A3%8B-%E5%8A%A0%E8%BD%BD%E6%A3%8B%E5%B1%80%E6%AD%A5%E9%AA%A4%E6%98%BE%E7%A4%BA"><span class="nav-number">6.7.</span> <span class="nav-text">悔棋 &amp; 加载棋局步骤显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E7%BD%91%E5%AF%B9%E6%88%98"><span class="nav-number">6.8.</span> <span class="nav-text">联网对战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#socket%E7%BC%96%E7%A8%8B"><span class="nav-number">6.8.1.</span> <span class="nav-text">Socket编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92"><span class="nav-number">6.8.2.</span> <span class="nav-text">消息传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E4%BB%A5%E5%8F%8A%E7%8B%AC%E7%AB%8B%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">6.8.3.</span> <span class="nav-text">状态同步，以及独立的服务端？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85"><span class="nav-number">6.9.</span> <span class="nav-text">可执行文件打包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">6.10.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E6%97%B6%E5%99%A8"><span class="nav-number">6.11.</span> <span class="nav-text">计时器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bonus%E8%AE%A1%E5%88%86"><span class="nav-number">7.</span> <span class="nav-text">bonus计分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E4%B8%AA%E7%A5%9E%E5%A5%87%E7%9A%84class"><span class="nav-number">8.</span> <span class="nav-text">五个神奇的class</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5"><span class="nav-number">8.1.</span> <span class="nav-text">导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audioplayer"><span class="nav-number">8.2.</span> <span class="nav-text">AudioPlayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gridpanel"><span class="nav-number">8.3.</span> <span class="nav-text">GridPanel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backgroundimagepanel"><span class="nav-number">8.4.</span> <span class="nav-text">BackgroundImagePanel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eventcenter%E5%92%8Cevent"><span class="nav-number">8.5.</span> <span class="nav-text">EventCenter和Event</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Froster</p>
+  <div class="site-description" itemprop="description">一些垃圾话</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Froster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

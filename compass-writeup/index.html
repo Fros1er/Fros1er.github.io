@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.froster.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我也没想到我第一篇博客会是ctf...其实之前有很多可以写的东西，但那基本上是高中的时候，我没有稳定的环境（其实就是自己不会）跑hexo（确信）。 总之，目前有在参加COMPASS的培训。打不打比赛不知道，主要还是想图一乐加上了解一点点security。然后我需要点地方记笔记，就把这个远古page拿过来用了。 以下是正文，会持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="compass-writeup">
+<meta property="og:url" content="https://blog.froster.icu/compass-writeup/">
+<meta property="og:site_name" content="Froster&#39;s blog">
+<meta property="og:description" content="我也没想到我第一篇博客会是ctf...其实之前有很多可以写的东西，但那基本上是高中的时候，我没有稳定的环境（其实就是自己不会）跑hexo（确信）。 总之，目前有在参加COMPASS的培训。打不打比赛不知道，主要还是想图一乐加上了解一点点security。然后我需要点地方记笔记，就把这个远古page拿过来用了。 以下是正文，会持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-09T09:29:52.000Z">
+<meta property="article:modified_time" content="2025-02-07T03:08:23.723Z">
+<meta property="article:author" content="Froster">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.froster.icu/compass-writeup/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>compass-writeup | Froster's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Froster's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.froster.icu/compass-writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Froster">
+      <meta itemprop="description" content="一些垃圾话">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Froster's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          compass-writeup
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-09 17:29:52" itemprop="dateCreated datePublished" datetime="2022-07-09T17:29:52+08:00">2022-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-07 11:08:23" itemprop="dateModified" datetime="2025-02-07T11:08:23+08:00">2025-02-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我也没想到我第一篇博客会是ctf...其实之前有很多可以写的东西，但那基本上是高中的时候，我没有稳定的环境（其实就是自己不会）跑hexo（确信）。</p>
+<p>总之，目前有在参加<a target="_blank" rel="noopener" href="https://wiki.compass.college/">COMPASS</a>的培训。打不打比赛不知道，主要还是想图一乐加上了解一点点security。然后我需要点地方记笔记，就把这个远古page拿过来用了。</p>
+<p>以下是正文，会持续更新。</p>
+<span id="more"></span>
+<h2 id="week-1">Week 1</h2>
+<h3 id="旅行照片"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week1/%E6%97%85%E8%A1%8C%E7%85%A7%E7%89%87-216">旅行照片</a></h3>
+<p>蓝色kfc....没了。当时绕着海岸线找了一圈面向南+桥+港口的组合，最后发现百度地图上好像少了一个岛。真的屑。</p>
+<h2 id="week-2">Week 2</h2>
+<h3 id="calculat3-m3-a.k.a-httpsweb.ctflearn.comweb7"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week2/Calculat3%20M3-229">Calculat3 M3</a>, a.k.a https://web.ctflearn.com/web7/</h3>
+<p>很简单的一个题，除了我以为里面用的是<code>eval</code>...<br />
+实际上大概是<code>shell_exec(不知道什么只能解析带空格的算式的命令);</code>。随便post一个<code>1; ls</code>就结束了。</p>
+<h3 id="php-audit"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week2/php%20audit-232">php audit</a></h3>
+<p>flag在php那个<code>GLOBALS</code>全局变量里。想了好久才想起来有这个玩意。</p>
+<h3 id="execute"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week2/Execute?-231">Execute?</a></h3>
+<p>首先，经过提醒才想起来F12，看到可以view-source看php源码。这题用了<code>str_replace()</code>换掉了一堆符号，让我发现自己是个linux废物。最后实在想不出（查了一堆怎么绕过trim+str_replace），直接去查了原题。<br />
+答案是，<code>shell_exec</code>会执行传进去的<strong>每一行</strong>指令。所以可以用<code>\n</code>，也就是<code>0x0A</code>分隔。<br />
+最后ls, cat结束。一个小插曲是cat出的东西是html注释，耽误了一小会。</p>
+<h3 id="why-sqli"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week2/why%20sqli?-233">why sqli</a></h3>
+<p>用了<code>stripslashes</code>和<code>htmlentities</code>过滤。前者去除GET时用<code>\</code>的转义，后者把引号变成&amp;amp。<br />
+上周培训完要走的时候听某位神仙高呼“这都能宽字节？”，以为听到了解法，去学了一手。<br />
+总体就是在<code>\</code>前面加个<code>%DF</code>把<code>\</code>吃掉...但是没成功。现在看来引号都没了把<code>\</code>干掉也没用...上当！<br />
+最后还是去查了原题。代码里构造查询用的是 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$query</span>=<span class="string">&#x27;SELECT * FROM users WHERE name=\&#x27;&#x27;</span>.<span class="variable">$username</span>.<span class="string">&#x27;\&#x27; AND pass=\&#x27;&#x27;</span>.<span class="variable">$password</span>.<span class="string">&#x27;\&#x27;;&#x27;</span>;</span><br></pre></td></tr></table></figure> 拆一下： <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name<span class="operator">=</span><span class="string">&#x27;$username&#x27;</span> <span class="keyword">AND</span> pass<span class="operator">=</span><span class="string">&#x27;$password&#x27;</span>;</span><br></pre></td></tr></table></figure></p>
+<p>查到的题解是在username最后插个<code>\</code>，让查询变成 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># $username = &quot;user\&quot;</span></span><br><span class="line"><span class="variable">$query</span>=<span class="string">&quot;SELECT * FROM users WHERE name=\&#x27;user\\&#x27; AND pass=\&#x27;&quot;</span>.<span class="variable">$password</span>.<span class="string">&#x27;\&#x27;;&#x27;</span>;</span><br></pre></td></tr></table></figure> 这样可以把<code>AND</code>前面的<code>'</code>转义掉，password就可以不考虑<code>pass='</code>的闭合问题了...<br />
+最后构造的是<code>http://103.102.44.218:10018/challenge1.php?username=user\&amp;password= or 1=1 order by pass limit 1 offset 1--+</code>。</p>
+<h3 id="for-you-php-inclusion-master"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week2/For%20you,%20PHP%20Inclusion%20master-234">For you, PHP Inclusion master</a></h3>
+<p><em>我又不是master，我怎么会做</em><br />
+0 solve，不知道是神仙都做不出来还是不样神仙做题。反正我肯定不会，等听了题解再更新。</p>
+<h2 id="week-3">Week 3</h2>
+<h3 id="sqli"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week3/SQLI-238">SQLI</a></h3>
+<p>一眼mysql_error，去查了一下还真能注入...<br />
+然后网上随便找了个<code>' and exp(~(select * from (select pw from php)x)) #</code>。注入成功把flag打出来了，交上去提示不对。<br />
+问了问神仙，拿出来的可能是别的题的flag...草。真正的flag需要到echo "*******"那里。<br />
+echo前面用的是<code>!strcasecmp($pass, $row[pw])</code>判断密码。网上说给strcasecmp传数组会返回0，但$pass过了遍md5，没法用数组。<br />
+最后考虑到...反正随便注入，给<code>$row[pw]</code>换成自己想要的值就好了。 构造的是user=<code>' union select "c4ca4238a0b923820dcc509a6f75849b" as pw #</code>, pass=<code>1</code>。c4ca那一串是1的md5。</p>
+<h3 id="reverse-shell-included"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week3/Reverse%20shell%20included-235">Reverse shell included</a></h3>
+<p><del>虽然名字叫Reverse shell但其实用不上反弹shell</del> <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$str</span>=@(<span class="keyword">string</span>)<span class="variable">$_GET</span>[<span class="string">&#x27;str&#x27;</span>];</span><br><span class="line"><span class="keyword">eval</span>(<span class="string">&#x27;$str=&quot;&#x27;</span>.<span class="title function_ invoke__">addslashes</span>(<span class="variable">$str</span>).<span class="string">&#x27;&quot;;&#x27;</span>);</span><br></pre></td></tr></table></figure> 这里用到了<code>$&#123;&#125;</code>语法。php会先执行<code>$&#123;&#125;</code>里写的函数，然后把返回值拼进字符串。<br />
+e.g. <code>?str=$&#123;phpinfo()&#125;</code>会打出phpinfo。<br />
+不过有个问题，有addslashes，所以字符串需要...通过GET传进来。<br />
+最后构造的是<code>?str=$&#123;eval($_GET[1])&#125;&amp;1=echo%20file_get_contents($_GET[2]);&amp;2=flag.php</code>。</p>
+<p>反弹shell的话，vps上用<code>nc -lvnp port</code>，target照着<a target="_blank" rel="noopener" href="https://your-shell.com">your-shell</a>上的指示来就行。</p>
+<h1 id="week-4">Week 4</h1>
+<h3 id="whitepages"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week4/WhitePages-246">WhitePages</a></h3>
+<p>hex打开一看，一共就四种字符。一开始用的是0x20为分割，其他的计数转八进制，然后赛博厨子没结果。后来把0x20为0，另外一个为1，还是没结果。最后有群友截图问，发现0x20是1，另一个是0...麻了。最后往from binary一丢就完事了。</p>
+<h3 id="简单的隐写"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week4/%E7%AE%80%E5%8D%95%E7%9A%84%E9%9A%90%E5%86%99-251">简单的隐写</a></h3>
+<p>这题抄的wp。扔给stegSolve，在RGB通道看到最上面一行有不规则的点...然后没有然后了。</p>
+<h3 id="m00nwalk"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week4/m00nwalk-245">m00nwalk</a></h3>
+<p>SSTV。</p>
+<h3 id="weak-password"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week4/weak%20password-248">weak password</a></h3>
+<p>先用john把压缩包密码破了。<br />
+密码是5位可打印的ASCII，翻了下john的文档，可以直接配置。 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/john/john.conf</span></span><br><span class="line"><span class="section">[Incremental:Custom]</span></span><br><span class="line"><span class="attr">File</span> = <span class="variable">$JOHN</span>/ascii.chr</span><br><span class="line"><span class="attr">MinLen</span> = <span class="number">5</span></span><br><span class="line"><span class="attr">MaxLen</span> = <span class="number">5</span></span><br><span class="line"><span class="attr">CharCount</span> = <span class="number">95</span></span><br></pre></td></tr></table></figure> 然后用 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip2john xxxtentacion.zip &gt;&gt; passwd</span><br><span class="line">john --incremental:Custom passwd</span><br></pre></td></tr></table></figure> 就可以爆了。<br />
+解出一张里面是南通内容的图片，格式jpg。jpg不能LSB（一开始忘记了，看了好久），扔binwalk和stegdetect也没结果。最后拿hex开了一下，发现jpg最后多了点东西。复制出来扔赛博厨子的magic，给出了base64+png。<br />
+这张图片是个反色缺了三个角的二维码。补上三个角可以拿到flag的后半段，png本体丢进<code>zsteg -a</code>可以拿到flag前半段。</p>
+<h3 id="老坛酸菜之神"><a target="_blank" rel="noopener" href="https://compass.ctfd.io/challenges#Week4/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C%E4%B9%8B%E7%A5%9E-250">老坛酸菜之神</a></h3>
+<p>据说很简单...总之有好多解法。 #### CE 要找100个老坛酸菜的图片，所以找到一个就用CE搜increased by 1...<br />
+最后搜到的地址是有规律的，都改成99就行。<br />
+<em>草啊我手机修改了那么多次游戏怎么在这就没想到</em></p>
+<h4 id="od其一">OD（其一）</h4>
+<p>据说可以给ESP寄存器下断点，有个叫ESP定理的东西。<br />
+ESP好像很像mips的<code>$ra</code>...<br />
+总之没成功。</p>
+<h4 id="od其二">OD（其二）</h4>
+<p>根据<a target="_blank" rel="noopener" href="https://immoying.top/?p=192">这篇博客</a>，先给MessageBox下断点然后单步调试，易语言的主窗口是<code>call+add+jmp</code>，在这里搜索字符串。</p>
+<h4 id="脱壳">脱壳</h4>
+<p>百度一个易语言脱壳工具，然后直接文本文件打开看字符串即可。</p>
+<h1 id="week-5">Week 5</h1>
+<p>本周的题目来自<a target="_blank" rel="noopener" href="https://hope.dicega.ng/challs">这里</a><br />
+### crypto/obp 儿简送的xor。从之前的一个misc知道了flag格式是<code>hope&#123;&#125;</code>，所以直接拿<code>hope&#123;</code>和密文爆出了key。</p>
+<h3 id="cryptokfb">crypto/kfb</h3>
+<p>观察加密脚本。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encrypt</span>(<span class="params">k, pt</span>):</span><br><span class="line">  <span class="keyword">assert</span> <span class="built_in">len</span>(k) == BLOCK</span><br><span class="line">  pt = pad(pt, BLOCK)</span><br><span class="line">  ct = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">  <span class="keyword">for</span> bk <span class="keyword">in</span> ichunked(pt, BLOCK):</span><br><span class="line">    ct += strxor(encrypt_block(k, k), <span class="built_in">bytes</span>(bk))</span><br><span class="line">  <span class="keyword">return</span> ct</span><br></pre></td></tr></table></figure> 可以看到<code>encrypt_block出来的</code>每次都是同一个东西，记为K。<br />
+题目允许你自己提供一个hex上去，返回加密的内容。<br />
+记flag为flag，flag密文为a，提供的内容为m，提供内容的密文为b。<br />
+有：flag ^ K = a, m ^ k = b<br />
+则：flag = a ^ b ^ m。<br />
+实际解题时要注意xor的方式，和BLOCK大小（有一个padding）。</p>
+<hr />
+<p><em>未完待续</em></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/bsp8266-trial/" rel="next" title="自动开灯(?)">
+      自动开灯(?) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#week-1"><span class="nav-number">1.</span> <span class="nav-text">Week 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%85%E8%A1%8C%E7%85%A7%E7%89%87"><span class="nav-number">1.1.</span> <span class="nav-text">旅行照片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#week-2"><span class="nav-number">2.</span> <span class="nav-text">Week 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#calculat3-m3-a.k.a-httpsweb.ctflearn.comweb7"><span class="nav-number">2.1.</span> <span class="nav-text">Calculat3 M3, a.k.a https:&#x2F;&#x2F;web.ctflearn.com&#x2F;web7&#x2F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php-audit"><span class="nav-number">2.2.</span> <span class="nav-text">php audit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#execute"><span class="nav-number">2.3.</span> <span class="nav-text">Execute?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-sqli"><span class="nav-number">2.4.</span> <span class="nav-text">why sqli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-you-php-inclusion-master"><span class="nav-number">2.5.</span> <span class="nav-text">For you, PHP Inclusion master</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#week-3"><span class="nav-number">3.</span> <span class="nav-text">Week 3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqli"><span class="nav-number">3.1.</span> <span class="nav-text">SQLI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reverse-shell-included"><span class="nav-number">3.2.</span> <span class="nav-text">Reverse shell included</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#week-4"><span class="nav-number"></span> <span class="nav-text">Week 4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#whitepages"><span class="nav-number">0.1.</span> <span class="nav-text">WhitePages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E9%9A%90%E5%86%99"><span class="nav-number">0.2.</span> <span class="nav-text">简单的隐写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#m00nwalk"><span class="nav-number">0.3.</span> <span class="nav-text">m00nwalk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-password"><span class="nav-number">0.4.</span> <span class="nav-text">weak password</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C%E4%B9%8B%E7%A5%9E"><span class="nav-number">0.5.</span> <span class="nav-text">老坛酸菜之神</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#od%E5%85%B6%E4%B8%80"><span class="nav-number">0.5.1.</span> <span class="nav-text">OD（其一）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#od%E5%85%B6%E4%BA%8C"><span class="nav-number">0.5.2.</span> <span class="nav-text">OD（其二）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">0.5.3.</span> <span class="nav-text">脱壳</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#week-5"><span class="nav-number"></span> <span class="nav-text">Week 5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cryptokfb"><span class="nav-number">0.1.</span> <span class="nav-text">crypto&#x2F;kfb</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Froster</p>
+  <div class="site-description" itemprop="description">一些垃圾话</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Froster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

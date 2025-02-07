@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.froster.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="网上一堆博客，然后又犯了觉得他们写不清楚的老毛病。 开一篇，也当复习了。所有内容依据网上博客整理，没自己读过源码。有错误请随意指出。 Select 1int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, timeval *timeout); read, write, except对应需要监听相应事件的f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yet another IO多路复用的博客">
+<meta property="og:url" content="https://blog.froster.icu/io-mux/">
+<meta property="og:site_name" content="Froster&#39;s blog">
+<meta property="og:description" content="网上一堆博客，然后又犯了觉得他们写不清楚的老毛病。 开一篇，也当复习了。所有内容依据网上博客整理，没自己读过源码。有错误请随意指出。 Select 1int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, timeval *timeout); read, write, except对应需要监听相应事件的f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-05T12:35:28.000Z">
+<meta property="article:modified_time" content="2025-02-07T03:08:23.723Z">
+<meta property="article:author" content="Froster">
+<meta property="article:tag" content="networking">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.froster.icu/io-mux/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Yet another IO多路复用的博客 | Froster's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Froster's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.froster.icu/io-mux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Froster">
+      <meta itemprop="description" content="一些垃圾话">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Froster's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Yet another IO多路复用的博客
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-05 20:35:28" itemprop="dateCreated datePublished" datetime="2023-03-05T20:35:28+08:00">2023-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-07 11:08:23" itemprop="dateModified" datetime="2025-02-07T11:08:23+08:00">2025-02-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>网上一堆博客，然后又犯了觉得他们写不清楚的老毛病。</p>
+<p>开一篇，也当复习了。所有内容依据网上博客整理，没自己读过源码。有错误请随意指出。</p>
+<h1 id="select">Select</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">select</span><span class="params">(<span class="type">int</span> nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, timeval *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>read, write, except对应需要监听相应事件的fds。</p>
+<p>把需要监听的fd扔进<code>fd_set</code>（可以当作一个1024位的bitset）里面。有<code>FD_ZERO</code>，<code>FD_SET</code>，<code>FD_ISSET</code>几个宏管理<code>fd_set</code>。</p>
+<p>调用select时，对于fd_set每一个置1的位对应的fd，select先调用<code>file_operations-&gt;poll</code>判断文件是否满足监听条件，如果有满足的立刻返回。如果都不满足，把调用进程扔进的等待队列里，然后当前进程进入阻塞态。</p>
+<p>select返回以后，fds和timeout被改写。需要用一个循环判断fds里面哪几位是1，然后用对应的fd读写。</p>
+<p>pselect是select带一个sigmask的版本。大体是可以在进入pselect之后切换signal的屏蔽（e.g.原来屏蔽sigint，进去以后不屏蔽有特殊处理）。见<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/46042794/how-does-pselect-blocks-signal-using-signal-mask-in-network-programming" class="uri">https://stackoverflow.com/questions/46042794/how-does-pselect-blocks-signal-using-signal-mask-in-network-programming</a>。</p>
+<h1 id="poll">Poll</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">poll</span><span class="params">(pollfd *fds, <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span></span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">pollfd</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd;			<span class="comment">/* File descriptor to poll.  */</span></span><br><span class="line">    <span class="type">short</span> <span class="type">int</span> events;		<span class="comment">/* Types of events poller cares about.  */</span></span><br><span class="line">    <span class="type">short</span> <span class="type">int</span> revents;		<span class="comment">/* Types of events that actually occurred.  */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>显而易见。提前准备好fds数组，填好fd和events，poll结束之后revents会被os填好。</p>
+<p>比select好的地方在于fds没有1024位的限制，并且支持更精细的event控制（有一堆宏）。缺点是<code>pollfd *</code>是数组，添加新的会...有很头疼的内存分配。提前开好比较大的空间的话，又会因为每次在用户态和内核态中间来回赋值导致耗费比较大。而且和select一样需要遍历所有fds（虽然会好一点点，可以跳过中间没有使用的fd）。</p>
+<p>ppoll同pselect。</p>
+<h1 id="epoll">Epoll</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_create</span><span class="params">(<span class="type">int</span> size)</span></span>; <span class="comment">// size is a hint for allocation. returns epfd.</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, epoll_event *event)</span></span>; <span class="comment">// op: add / del / modify</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span></span></span><br><span class="line"><span class="function"><span class="keyword">struct</span> epoll_event </span>&#123;</span><br><span class="line">    <span class="type">uint32_t</span> events;	<span class="comment">/* Epoll events */</span></span><br><span class="line">    <span class="type">epoll_data_t</span> data;	<span class="comment">/* User data variable. union for ptr or fd. */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>epoll维护就绪队列rdlist链表，用于记录哪个fd就绪（不需遍历）。还维护一个红黑树<code>map&lt;fd, epoll_event&gt;</code>（实际还有些别的，只看接口的话可以看成这样）。（红黑树node和链表node共用，所以删的时候是一起删掉的）。</p>
+<p>epoll_create打开一个需要close掉的fd用来维护epoll。这玩意和文件一样有等待队列，稍后用到。</p>
+<p>epoll_ctl增删改epoll监听的fd。具体是把epoll本体添加到对应fd的等待队列里。fd对应的文件就绪时，把自己加进rdlist，然后让epoll就绪。此外，把fd-&gt;epoll_event的关系添加进红黑树，方便在fd就绪时查找对应的节点。</p>
+<p>调用epoll_wait时如果rdlist非空立刻返回，为空则阻塞，并把当前进程加入epoll的等待队列，epoll就绪时返回。返回时需要分配一段内存放copy过来的epoll_event。</p>
+<p>看了一点源码，红黑树里面装的epoll_event是epoll_ctl设置的原始值。epoll_wait返回时，会往传入的event里面copy一份原始值，然后去到fd对应的文件里拿真正发生的events做一个and。</p>
+<h1 id="aio">aio</h1>
+<p>没看。目前在linux的实现貌似不全面而且有问题？反正是给kernel提供一块user space的空间，kernel把东西全搞定以后发通知回来。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/networking/" rel="tag"># networking</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/cpp/" rel="prev" title="一些c艹碎碎念">
+      <i class="fa fa-chevron-left"></i> 一些c艹碎碎念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/network-basic/" rel="next" title="Yet another 寄网八股文">
+      Yet another 寄网八股文 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#select"><span class="nav-number">1.</span> <span class="nav-text">Select</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#poll"><span class="nav-number">2.</span> <span class="nav-text">Poll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">3.</span> <span class="nav-text">Epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#aio"><span class="nav-number">4.</span> <span class="nav-text">aio</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Froster</p>
+  <div class="site-description" itemprop="description">一些垃圾话</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Froster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
