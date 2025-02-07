@@ -6,6 +6,22 @@ tags:
 记录一些c艹问题。
 
 ## rvalue ref是左值
+
+下面写的不太对，重新研究了一下。
+
+从语义上讲，rvalue reference的变量是一个hint...提示程序员稍后可以move这个变量。这个用法其实不常见。
+
+更常见的用法是在泛型里。`for (auto&& e : container)`的`e`可以装任何东西，无论迭代器返回的是prvalue(`T`), lvalue ref(`T &`)还是xvalue(`T &&`)。e后面传给函数的时候有时候接一个forward。
+
+其他时候`T &&x;`一点用没有，有时候甚至比`T x`还要烂。
+```
+T &&x = move(y);
+return move(x)
+```
+调用两次move ctor，而`T x`在优化copy的情况下只调用一次。
+
+----
+
 参透了一切...
 
 xvalue几乎是人为规定的。一个value以后弃用了，但还没到destory的时候可以称为xvalue。
